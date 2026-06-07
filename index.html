@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Права Водія — Юридичний довідник</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #151820;
+    --border: #1e2330;
+    --accent: #f5c518;
+    --accent2: #2d7dd2;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --danger: #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  header h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  header p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  nav a {
+    background: var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  nav a:hover { background: var(--accent); color: #000; }
+
+  /* MAIN */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* SECTION */
+  .law-group {
+    margin-bottom: 40px;
+  }
+  .law-group-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  /* ARTICLE CARD */
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    scroll-margin-top: 80px;
+  }
+  .article-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+  .article-header:hover { background: var(--border); }
+
+  .article-tag {
+    background: var(--accent);
+    color: #000;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .article-tag.blue { background: var(--accent2); color: #fff; }
+  .article-tag.red { background: var(--danger); color: #fff; }
+
+  .article-title {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+  .article-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .article.open .article-arrow { transform: rotate(180deg); }
+
+  .article-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .article.open .article-body { display: block; }
+
+  .article-body p {
+    margin-top: 12px;
+    color: var(--text);
+  }
+
+  .article-body ol, .article-body ul {
+    margin: 10px 0 0 18px;
+  }
+  .article-body li { margin-bottom: 6px; }
+
+  .highlight {
+    background: rgba(245, 197, 24, 0.1);
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    margin-top: 12px;
+    border-radius: 0 4px 4px 0;
+    font-size: 13px;
+  }
+  .highlight.blue {
+    background: rgba(45, 125, 210, 0.1);
+    border-color: var(--accent2);
+  }
+  .highlight.red {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--danger);
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    color: var(--accent2);
+    font-size: 12px;
+    text-decoration: none;
+    border: 1px solid var(--accent2);
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .source-link:hover { background: rgba(45,125,210,0.15); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚖️ ПРАВА ВОДІЯ</h1>
+  <p>Юридичний довідник при спілкуванні з поліцією</p>
+</header>
+
+<nav>
+  <a href="#st18">ст. 18 Нацполіція</a>
+  <a href="#st35">ст. 35 Нацполіція</a>
+  <a href="#pdr24">п. 2.4 ПДР</a>
+  <a href="#kupap251">ст. 251 КУпАП</a>
+  <a href="#kupap268">ст. 268 КУпАП</a>
+  <a href="#kupap279">ст. 279 КУпАП</a>
+  <a href="#kupap280">ст. 280 КУпАП</a>
+  <a href="#kupap283">ст. 283 КУпАП</a>
+  <a href="#konst63">ст. 63 Конституція</a>
+</nav>
+
+<main>
+
+  <!-- ЗАКОН ПРО НАЦПОЛІЦІЮ -->
+  <div class="law-group">
+    <div class="law-group-title">Закон України «Про Національну поліцію»</div>
+
+    <div class="article open" id="st18">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 18</span>
+        <span class="article-title">Обов'язки поліцейського при зверненні</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Під час звернення до особи поліцейський <strong>зобов'язаний</strong>:</p>
+        <ol>
+          <li>Назвати своє прізвище, посаду та звання.</li>
+          <li>Пред'явити на вимогу службове посвідчення — не випускаючи з рук.</li>
+          <li>Повідомити мету звернення.</li>
+        </ol>
+        <div class="highlight">
+          💡 <strong>Твої дії:</strong> Спокійно вимагай виконання цих трьох пунктів до будь-якої розмови. Увімкни запис.
+        </div>
+        <a class="source-link" href="https://zakon.rada.gov.ua/laws/show/580-19#n210" target="_blank">
+          📄 Першоджерело — zakon.rada.gov.ua
+        </a>
+      </div>
+    </div>
+
+    <div class="article" id="st35">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 35</span>
+        <span class="article-title">Законні підстави зупинки транспортного засобу</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Поліцейський може зупинити транспортний засіб <strong>лише</strong> у таких випадках:</p>
+        <ol>
+          <li>Водій порушив Правила дорожнього руху.</li>
+          <li>Очевидні ознаки технічної несправності ТЗ.</li>
+          <li>Причетність водія/пасажирів до ДТП або правопорушення.</li>
+          <li>ТЗ перебуває в розшуку.</li>
+          <li>Опитування як свідка ДТП або як понятого.</li>
+          <li>Обмеження руху відповідними органами влади.</li>
+          <li>Небезпечно закріплений вантаж.</li>
+          <li>Протиправні спеціальні сигнали на ТЗ.</li>
+          <li>Перевірка документів під час дії <strong>воєнного стану</strong>.</li>
+        </ol>
+        <div class="highlight red">
+          🚫 <strong>Перелік вичерпний!</strong> Будь-яка інша причина зупинки — незаконна.
+        </div>
+        <a class="source-link" href="https://zakon.rada.gov.ua/laws/show/580-19#n467" target="_blank">
+          📄 Першоджерело — zakon.rada.gov.ua
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПДР -->
+  <div class="law-group">
+    <div class="law-group-title">Правила дорожнього руху України</div>
+
+    <div class="article" id="pdr24">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag blue">П. 2.4</span>
+        <span class="article-title">Обов'язки водія при зупинці поліцією</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Водій зобов'язаний на вимогу поліцейського зупинитись та пред'явити документи.</p>
+        <div class="highlight blue">
+          💡 <strong>Важливо:</strong> Вимога пред'явити документи є законною лише <em>після</em> того, як поліцейський виконав свої обов'язки за ст. 18 Закону про Нацполіцію — назвався і пред'явив посвідчення.
+        </div>
+        <a class="source-link" href="https://zakon.rada.gov.ua/laws/show/1306-2001-%D0%BF" target="_blank">
+          📄 Першоджерело — zakon.rada.gov.ua
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- КУпАП -->
+  <div class="law-group">
+    <div class="law-group-title">Кодекс України про адміністративні правопорушення (КУпАП)</div>
+
+    <div class="article" id="kupap251">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 251</span>
+        <span class="article-title">Докази у справі</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Доказами є будь-які фактичні дані, на основі яких встановлюється наявність або відсутність правопорушення.</p>
+        <p>До доказів належать: пояснення особи, показання свідків, речові докази, <strong>відеозаписи</strong>, висновки експерта тощо.</p>
+        <div class="highlight red">
+          🚫 <strong>Усні слова інспектора «я сам бачив» — не є доказом!</strong> Вимагай матеріальних доказів.
+        </div>
+        <a class="source-link" href="https://protocol.ua/ua/kodeks_ukraini_pro_administrativni_pravoporushennya_stattya_251/" target="_blank">
+          📄 Першоджерело — protocol.ua
+        </a>
+      </div>
+    </div>
+
+    <div class="article" id="kupap268">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 268</span>
+        <span class="article-title">Права особи, яка притягається до відповідальності</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Особа, яка притягається до адміністративної відповідальності, має право:</p>
+        <ol>
+          <li>Знайомитися з матеріалами справи.</li>
+          <li>Давати пояснення та подавати докази.</li>
+          <li>Заявляти клопотання.</li>
+          <li><strong>Користуватися допомогою адвоката.</strong></li>
+          <li>Виступати рідною мовою, користуватися послугами перекладача.</li>
+          <li>Оскаржити постанову по справі.</li>
+        </ol>
+        <div class="highlight">
+          💡 <strong>Твої дії:</strong> Заяви: «Прошу перенести розгляд справи для залучення адвоката» — це твоє законне право.
+        </div>
+        <a class="source-link" href="https://protocol.ua/ua/kodeks_ukraini_pro_administrativni_pravoporushennya_stattya_268/" target="_blank">
+          📄 Першоджерело — protocol.ua
+        </a>
+      </div>
+    </div>
+
+    <div class="article" id="kupap279">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 279</span>
+        <span class="article-title">Порядок розгляду справи про правопорушення</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>При розгляді справи орган (посадова особа) зобов'язаний:</p>
+        <ol>
+          <li>Оголосити, яка справа розглядається.</li>
+          <li>З'ясувати особу.</li>
+          <li><strong>Роз'яснити права особи (ст. 268).</strong></li>
+          <li>Розглянути заявлені клопотання.</li>
+        </ol>
+        <div class="highlight red">
+          🚫 <strong>Якщо клопотання про адвоката подано — поліцейський зобов'язаний або перенести розгляд, або винести письмову мотивовану відмову.</strong> Ігнорування клопотання — порушення закону.
+        </div>
+        <a class="source-link" href="https://protocol.ua/ua/kodeks_ukraini_pro_administrativni_pravoporushennya_stattya_279/" target="_blank">
+          📄 Першоджерело — protocol.ua
+        </a>
+      </div>
+    </div>
+
+    <div class="article" id="kupap280">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 280</span>
+        <span class="article-title">Обставини, що підлягають з'ясуванню</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>При розгляді справи орган зобов'язаний з'ясувати:</p>
+        <ol>
+          <li>Чи було вчинено правопорушення.</li>
+          <li>Чи винна ця особа.</li>
+          <li>Чи підлягає вона відповідальності.</li>
+          <li>Чи є обставини, що пом'якшують або обтяжують відповідальність.</li>
+        </ol>
+        <div class="highlight blue">
+          💡 Розгляд справи має бути <strong>всебічним, повним та об'єктивним.</strong> Однобічність — підстава для скасування постанови.
+        </div>
+        <a class="source-link" href="https://protocol.ua/ua/kodeks_ukraini_pro_administrativni_pravoporushennya_stattya_280/" target="_blank">
+          📄 Першоджерело — protocol.ua
+        </a>
+      </div>
+    </div>
+
+    <div class="article" id="kupap283">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag">Ст. 283</span>
+        <span class="article-title">Зміст постанови по справі</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Постанова по справі про адміністративне правопорушення повинна містити:</p>
+        <ol>
+          <li>Найменування органу (посадової особи), що виніс постанову.</li>
+          <li>Дату розгляду справи.</li>
+          <li>Відомості про особу, щодо якої розглядається справа.</li>
+          <li>Опис правопорушення з посиланням на статтю закону.</li>
+          <li>Прийняте рішення.</li>
+        </ol>
+        <div class="highlight">
+          💡 <strong>Підписуй ЛИШЕ в графі «копію отримав».</strong> В поясненнях пиши: «Не згоден, права не роз'яснено, у залученні адвоката відмовлено, процедуру порушено, доказів немає».
+        </div>
+        <a class="source-link" href="https://protocol.ua/ua/kodeks_ukraini_pro_administrativni_pravoporushennya_stattya_283/" target="_blank">
+          📄 Першоджерело — protocol.ua
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- КОНСТИТУЦІЯ -->
+  <div class="law-group">
+    <div class="law-group-title">Конституція України</div>
+
+    <div class="article" id="konst63">
+      <div class="article-header" onclick="toggle(this)">
+        <span class="article-tag blue">Ст. 63</span>
+        <span class="article-title">Право не свідчити проти себе</span>
+        <span class="article-arrow">▾</span>
+      </div>
+      <div class="article-body">
+        <p>Особа не несе відповідальності за відмову давати показання або пояснення щодо себе, членів своєї сім'ї або близьких родичів.</p>
+        <div class="highlight">
+          💡 <strong>Ти маєш право мовчати.</strong> Відмова давати пояснення — не є порушенням закону.
+        </div>
+        <a class="source-link" href="https://zakon.rada.gov.ua/laws/show/254%D0%BA/96-%D0%B2%D1%80#n3823" target="_blank">
+          📄 Першоджерело — zakon.rada.gov.ua
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Інформаційний довідник. Не є юридичною консультацією.<br>
+  Перевіряйте актуальність норм на офіційних джерелах.
+</footer>
+
+<script>
+  function toggle(header) {
+    header.parentElement.classList.toggle('open');
+  }
+
+  // Авто-відкриття по якорю
+  window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) {
+        el.classList.add('open');
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
