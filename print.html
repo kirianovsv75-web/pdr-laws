@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дорожній Адвокат — Друк</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .icon { font-size: 64px; margin-bottom: 16px; }
+        h2 { margin: 0 0 8px 0; font-size: 22px; }
+        p { margin: 0 0 24px 0; color: #aaa; font-size: 15px; }
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: #2E7D32;
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn:active { background: #1B5E20; }
+        .hint { margin-top: 16px; font-size: 13px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="icon">🖨️</div>
+    <h2>Дорожній Адвокат</h2>
+    <p>Готово до друку</p>
+    <a id="printBtn" class="btn" href="#">Відкрити принтер</a>
+    <div class="hint">Якщо додаток не відкрився — натисніть кнопку</div>
+
+    <script>
+        // Беремо text з параметрів URL
+        var params = new URLSearchParams(window.location.search);
+        var text = params.get('text');
+
+        if (text) {
+            var deeplink = 'myprinter://print?text=' + encodeURIComponent(text);
+            document.getElementById('printBtn').href = deeplink;
+
+            // Автоматичний редирект через 300мс (щоб сторінка встигла завантажитись)
+            setTimeout(function() {
+                window.location.href = deeplink;
+            }, 300);
+        } else {
+            document.getElementById('printBtn').href = '#';
+            document.querySelector('p').textContent = 'Помилка: текст не передано';
+        }
+    </script>
+</body>
+</html>
