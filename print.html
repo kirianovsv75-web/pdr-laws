@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Друк клопотання...</title>
+    <title>Перехід до принтера...</title>
     <style>
         body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f9; color: #333; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <h2>Обробка клопотання</h2>
-    <p>Копіюємо текст та відкриваємо принтер...</p>
-    <div class="loader"></div>
+    <h2>Відкриваємо додаток принтера...</h2>
+    <p>Будь ласка, зачекайте.</p>
 
     <script>
         function getQueryParam(param) {
@@ -21,53 +18,10 @@
             return urlParams.get(param);
         }
 
-        // Декодуємо текст із Base64
         const encodedText = getQueryParam('text');
         if (encodedText) {
-            try {
-                // Заміна символів для безпечного url-safe base64
-                let base64 = encodedText.replace(/-/g, '+').replace(/_/g, '/');
-                while (base64.length % 4) { base64 += '='; }
-                const decodedText = decodeURIComponent(escape(atob(base64)));
-
-                // ФУНКЦІЯ АВТОКОПІЮВАННЯ В БУФЕР ОБМІНУ
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(decodedText).then(redirectToApp).catch(redirectToApp);
-                } else {
-                    // Резервний метод копіювання для старих браузерів WebView
-                    const textArea = document.createElement("textarea");
-                    textArea.value = decodedText;
-                    textArea.style.position = "fixed";
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    try { document.execCommand('copy'); } catch (err) {}
-                    document.body.removeChild(textArea);
-                    redirectToApp();
-                }
-            } catch (e) {
-                alert("Помилка декодування тексту.");
-                redirectToApp();
-            }
-        } else {
-            redirectToApp();
-        }
-
-        function redirectToApp() {
-            // Перенаправляємо в додаток (передаємо текст і в URL)
+            // Просто робимо редирект в додаток, передаючи текст у посиланні
             window.location.href = "myprinter://print?text=" + encodeURIComponent(encodedText);
-            
-            // Якщо додаток не відкрився автоматично за 2 секунди, даємо кнопку вручну
-            setTimeout(function() {
-                document.body.innerHTML = `
-                    <h2>Друк клопотання</h2>
-                    <p style="color: green;">✅ Текст успішно скопійовано в буфер обміну!</p>
-                    <p>Якщо додаток принтера не відкрився автоматично, натисніть кнопку нижче:</p>
-                    <button onclick="window.location.href='myprinter://print?text=${encodedText}'" style="padding: 12px 24px; font-size: 16px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                        Перейти до принтера
-                    </button>
-                `;
-            }, 2000);
         }
     </script>
 </body>
