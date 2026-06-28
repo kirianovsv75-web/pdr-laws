@@ -1,66 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дорожній Адвокат — Друк</title>
+    <title>Друк клопотання...</title>
     <style>
-        body {
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: #1a1a2e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .icon { font-size: 64px; margin-bottom: 16px; }
-        h2 { margin: 0 0 8px 0; font-size: 22px; }
-        p { margin: 0 0 24px 0; color: #aaa; font-size: 15px; }
-        .btn {
-            display: inline-block;
-            padding: 16px 32px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            background: #2E7D32;
-            border: none;
-            border-radius: 12px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .btn:active { background: #1B5E20; }
-        .hint { margin-top: 16px; font-size: 13px; color: #666; }
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #f4f4f9; color: #333; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="icon">🖨️</div>
-    <h2>Дорожній Адвокат</h2>
-    <p>Готово до друку</p>
-    <a id="printBtn" class="btn" href="#">Відкрити принтер</a>
-    <div class="hint">Якщо додаток не відкрився — натисніть кнопку</div>
+    <h2>Обробка клопотання</h2>
+    <p>Копіюємо текст та відкриваємо принтер...</p>
+    <div class="loader"></div>
 
     <script>
-        // Беремо text з параметрів URL
-        var params = new URLSearchParams(window.location.search);
-        var text = params.get('text');
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
-        if (text) {
-            var deeplink = 'myprinter://print?text=' + encodeURIComponent(text);
-            document.getElementById('printBtn').href = deeplink;
+        // Декодуємо текст із Base64
+        const encodedText = getQueryParam('text');
+        if (encodedText) {
+            try {
+                // Заміна символів для безпечного url-safe base64
+                let base64 = encodedText.replace(/-/g, '+').replace(/_/g, '/');
+                while (base64.length % 4) { base64 += '='; }
+                const decodedText = decodeURIComponent(escape(atob(base64)));
 
-            // Автоматичний редирект через 300мс (щоб сторінка встигла завантажитись)
-            setTimeout(function() {
-                window.location.href = deeplink;
-            }, 300);
+                // ФУНКЦІЯ АВТОКОПІЮВАННЯ В БУФЕР ОБМІНУ
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(decodedText).then(redirectToApp).catch(redirectToApp);
+                } else {
+                    // Резервний метод копіювання для старих браузерів WebView
+                    const textArea = document.createElement("textarea");
+                    textArea.value = decodedText;
+                    textArea.style.position = "fixed";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try { document.execCommand('copy'); } catch (err) {}
+                    document.body.removeChild(textArea);
+                    redirectToApp();
+                }
+            } catch (e) {
+                alert("Помилка декодування тексту.");
+                redirectToApp();
+            }
         } else {
-            document.getElementById('printBtn').href = '#';
-            document.querySelector('p').textContent = 'Помилка: текст не передано';
+            redirectToApp();
+        }
+
+        function redirectToApp() {
+            // Перенаправляємо в додаток (передаємо текст і в URL)
+            window.location.href = "myprinter://print?text=" + encodeURIComponent(encodedText);
+            
+            // Якщо додаток не відкрився автоматично за 2 секунди, даємо кнопку вручну
+            setTimeout(function() {
+                document.body.innerHTML = `
+                    <h2>Друк клопотання</h2>
+                    <p style="color: green;">✅ Текст успішно скопійовано в буфер обміну!</p>
+                    <p>Якщо додаток принтера не відкрився автоматично, натисніть кнопку нижче:</p>
+                    <button onclick="window.location.href='myprinter://print?text=${encodedText}'" style="padding: 12px 24px; font-size: 16px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Перейти до принтера
+                    </button>
+                `;
+            }, 2000);
         }
     </script>
 </body>
